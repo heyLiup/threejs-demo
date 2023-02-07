@@ -1,8 +1,17 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import { graphData } from "./services/api";
+import logo from "./logo.svg";
+import "./App.css";
 
 function App() {
+  const getdata = async () => {
+    let res = await graphData();
+    console.log(res);
+    return res;
+  };
+  useEffect(() => {
+    getdata();
+  }, []);
   return (
     <div className="App">
       <header className="App-header">
