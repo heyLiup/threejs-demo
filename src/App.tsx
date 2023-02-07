@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { graphData } from "./services/api";
 import logo from "./image/logo.svg";
 import "./App.css";
+import LeftList from "./component/LeftList/index";
 
 function App() {
   const getdata = async () => {
@@ -47,6 +48,7 @@ function App() {
           <img className="title-part-logo" src={logo} alt="" />
           <span className="title-part-text">细胞与基因</span>
         </div>
+        <LeftList />
       </div>
     </div>
   );

@@ -550,43 +550,34 @@ module.exports = function (webpackEnv) {
             {
               test: lessRegex,
               exclude: lessModuleRegex,
-              use: [
-                ...getStyleLoaders(
-                  {
-                    importLoaders: 3,
-                    sourceMap: isEnvProduction
-                      ? shouldUseSourceMap
-                      : isEnvDevelopment,
-                  },
-                  "less-loader"
-                ),
+              use: getStyleLoaders(
                 {
-                  loader: "style-resources-loader",
-                  options: {
-                    // 配置全局变量
-                    patterns: path.resolve(__dirname, "../src/common.less"),
+                  importLoaders: 2,
+                  sourceMap: isEnvProduction && shouldUseSourceMap,
+                  modules: {
+                    // getLocalIdent: getCSSModuleLocalIdent,
+                    localIdentName: "[local]_[hash:base64:5]",
                   },
                 },
-              ],
+                "less-loader"
+              ),
               // Don't consider CSS imports dead code even if the
               // containing package claims to have no side effects.
               // Remove this when webpack adds a warning or an error for this.
-              // See https://github.com/webpack/webpack/issues/6571
+              // See <https://github.com/webpack/webpack/issues/6571>
               sideEffects: true,
             },
-            // Adds support for CSS Modules, but using SASS
-            // using the extension .module.scss or .module.sass
+            // Adds support for CSS Modules, but using LESS
+            // using the extension .module.less or .module.less
             {
               test: lessModuleRegex,
               use: getStyleLoaders(
                 {
-                  importLoaders: 3,
-                  sourceMap: isEnvProduction
-                    ? shouldUseSourceMap
-                    : isEnvDevelopment,
+                  importLoaders: 2,
+                  sourceMap: isEnvProduction && shouldUseSourceMap,
                   modules: {
-                    mode: "local",
-                    getLocalIdent: getCSSModuleLocalIdent,
+                    // getLocalIdent: getCSSModuleLocalIdent,
+                    localIdentName: "[local]_[hash:base64:5]",
                   },
                 },
                 "less-loader"
