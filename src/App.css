@@ -1,37 +1,27 @@
-.screen-root {
-  height: 100%;
-  width: 100%;
-}
-.screen {
-  display: inline-block;
-  width: 1920px;
-  height: 1080px;
-  transform-origin: 0 0;
-  position: absolute;
-  left: 50%;
-  background: #101f4e;
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-width: 1300px;
+  overflow-x: auto;
 }
 
-.title-part {
-  position: absolute;
-  top: 24px;
-  left: 24px;
+.top {
+  height: 120px;
+  background-color: #abc;
 }
 
-.title-part-logo {
-  display: inline-block;
-  width: 28px;
-  height: 28px;
-  vertical-align: middle;
-  margin-right: 16px;
+.content {
+  display: flex;
+  flex: 1;
 }
 
-.title-part-text {
-  font-family: "PingFang SC";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 34px;
-  vertical-align: middle;
-  color: #ffffff;
+.left {
+  width: 240px;
+  background-color: #cba;
+}
+
+.middle {
+  flex: 1;
+  background-color: #bac;
 }
