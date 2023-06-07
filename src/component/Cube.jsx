@@ -19,7 +19,7 @@ const CubeGrid = () => {
     const controls = new OrbitControls(camera, renderer.domElement);
     camera.position.z = 30;
 
-    const ambientLight = new THREE.AmbientLight(0x404040);
+    const ambientLight = new THREE.AmbientLight(0xffffff);
     scene.add(ambientLight);
 
     const pointLight = new THREE.PointLight(0xffffff, 1);
@@ -35,6 +35,7 @@ const CubeGrid = () => {
       vertexShader: basicvertex,
       fragmentShader: basicfragment,
       side: THREE.DoubleSide,
+      transparent: true,
       uniforms: {
         utime: {
           value: 0,
