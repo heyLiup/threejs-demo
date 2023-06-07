@@ -381,6 +381,12 @@ module.exports = function (webpackEnv) {
               },
             },
             {
+              test: /\.glsl$/,
+              use: {
+                loader: "webpack-glsl-loader",
+              },
+            },
+            {
               test: /\.svg$/,
               use: [
                 {
