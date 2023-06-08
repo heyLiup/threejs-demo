@@ -34,3 +34,4 @@ vec2 rotate(vec2 uv, float rotation, vec2 mid){
 [参考工具书](https://thebookofshaders.com/10/?lan=ch)
 
 1. Mod 取模(相当于 / )， 2.1 / 1 = 0.1; `一般用于重复`;
+2. step(a, b) 表示如果b >= a, 则返回1.0， 如果b < a 返回0.0 `一般用户锐化`
