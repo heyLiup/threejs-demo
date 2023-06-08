@@ -5072,6 +5072,11 @@
   "resolved" "https://registry.npmmirror.com/grapheme-splitter/-/grapheme-splitter-1.0.4.tgz"
   "version" "1.0.4"
 
+"gsap@^3.12.1":
+  "integrity" "sha512-FXtb2YbBE9l8I9Pl5DFLpCMedaiMPztRlr0Ln0CMSnJn+pbTaeKlzgth8cLNPc7PzNwIZe+SEQiBBAWaBKJdVA=="
+  "resolved" "https://registry.npmmirror.com/gsap/-/gsap-3.12.1.tgz"
+  "version" "3.12.1"
+
 "gzip-size@^6.0.0":
   "integrity" "sha512-ax7ZYomf6jqPTQ4+XCpUGyXKHk5WweS+e05MBO4/y3WJ5RkmPXNKvX+bx1behVILVwr6JSQvZAku021CHPXG3Q=="
   "resolved" "https://registry.npmmirror.com/gzip-size/-/gzip-size-6.0.0.tgz"

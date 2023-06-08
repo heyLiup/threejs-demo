@@ -35,3 +35,14 @@ vec2 rotate(vec2 uv, float rotation, vec2 mid){
 
 1. Mod 取模(相当于 / )， 2.1 / 1 = 0.1; `一般用于重复`;
 2. step(a, b) 表示如果b >= a, 则返回1.0， 如果b < a 返回0.0 `一般用户锐化`
+3. mix(color1, color2, position) 颜色混合，第三个参数为临界点
+
+
+
+### 建模工具
+[blender](https://www.blender.org/thanks/)
+
+1. shift + A 新建物体
+2. 切换到编辑模式，可以对物体进行拉伸，以及面的删除
+3. 选中点，按住g开始调整，鼠标滚轮调整范围，按 x、y、z选择调整方向
+4. 导出为glb文件
