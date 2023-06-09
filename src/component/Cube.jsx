@@ -10,6 +10,7 @@ import * as THREE from "three";
 const CubeGrid = () => {
   const canvasRef = useRef();
   const firstRef = useRef(false);
+  const currentPointRef = useRef(null);
   const init = () => {
     let width = canvasRef.current.clientWidth;
     let height = canvasRef.current.clientHeight;
@@ -20,11 +21,11 @@ const CubeGrid = () => {
     const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
     const clock = new THREE.Clock();
     const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.autoRotate = true;
-    controls.autoRotateSpeed = 0.5;
-    controls.maxPolarAngle = (Math.PI / 4) * 3;
-    controls.minPolarAngle = (Math.PI / 4) * 3;
+    // controls.enableDamping = true;
+    // controls.autoRotate = true;
+    // controls.autoRotateSpeed = 0.5;
+    // controls.maxPolarAngle = (Math.PI / 4) * 3;
+    // controls.minPolarAngle = (Math.PI / 4) * 3;
     camera.position.z = 100;
 
     const ambientLight = new THREE.AmbientLight(0xffffff);
@@ -39,40 +40,72 @@ const CubeGrid = () => {
       scene.background = texture;
       scene.environment = texture;
     });
-    const material = new THREE.ShaderMaterial({
-      vertexShader: basicvertex,
-      fragmentShader: basicfragment,
-      side: THREE.DoubleSide,
-    });
-    const gltfLoader = new GLTFLoader();
-    let lightBox = null;
-    gltfLoader.loadAsync("assets/flight.glb").then((flight) => {
-      console.log(flight);
-      lightBox = flight.scene.children[0];
-      lightBox.material = material;
 
-      for (let i = 0; i < 100; i++) {
-        let temp = flight.scene.clone(true);
-        temp.position.set(
-          (Math.random() - 0.5) * 300,
-          Math.random() * 100 + 10,
-          (Math.random() - 0.5) * 300
-        );
-        gsap.to(temp.rotation, {
-          y: 2 * Math.PI,
-          duration: Math.random() * 30,
-          repeat: -1,
-        });
-        scene.add(temp);
+    let material;
+    let point;
+    let geometry;
+
+    function createPoint() {
+      console.log("createPoint");
+      geometry = new THREE.BufferGeometry();
+      const geometryPostionArray = new Float32Array(3);
+      geometryPostionArray[0] = 0;
+      geometryPostionArray[1] = 0;
+      geometryPostionArray[2] = 0;
+      geometry.setAttribute(
+        "position",
+        new THREE.BufferAttribute(geometryPostionArray, 3)
+      );
+      material = new THREE.ShaderMaterial({
+        vertexShader: basicvertex,
+        fragmentShader: basicfragment,
+        side: THREE.DoubleSide,
+        uniforms: {
+          uPosition: {
+            value: new THREE.Vector3(
+              20 * Math.random(),
+              100 * Math.random(),
+              -20
+            ),
+          },
+          utime: {
+            value: 0,
+          },
+        },
+        transparent: true,
+        depthWrite: false,
+      });
+
+      point = new THREE.Points(geometry, material);
+      currentPointRef.current = point;
+      scene.add(point);
+    }
+
+    document.addEventListener("click", () => {
+      if (!currentPointRef.current) {
+        clock.start();
+        createPoint();
       }
     });
 
     const axesHelper = new THREE.AxesHelper(5);
-    // scene.add(axesHelper);
+    scene.add(axesHelper);
 
+    function clear() {
+      scene.remove(currentPointRef.current);
+      geometry.dispose();
+      material.dispose();
+      point.clear();
+    }
     const animate = function () {
-      // const elapsedTime = clock.getElapsedTime();
-      // material.uniforms.utime.value = elapsedTime;
+      const elapsedTime = clock.getElapsedTime();
+      if (elapsedTime < 1 && material) {
+        material.uniforms.utime.value = elapsedTime;
+      } else if (elapsedTime > 1 && material) {
+        clear();
+        clock.stop();
+        currentPointRef.current = null;
+      }
       requestAnimationFrame(animate);
       controls.update();
       renderer.render(scene, camera);
