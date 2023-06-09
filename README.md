@@ -1,5 +1,4 @@
-<img width="1030" alt="image" src="https://github.com/heyLiup/threejs-demo/assets/30928738/3b292f30-b468-4794-b5ef-79b403ada18c">
-
+![Uploading image.png…]()
 
 
 ## uv解释  
