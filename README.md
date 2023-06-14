@@ -64,7 +64,7 @@ vec2 rotate(vec2 uv, float rotation, vec2 mid){
   - gl_FrontFacing：在片元着色器中，这个只读变量指示了当前片元是否为正面朝向。如果是，那么它的值为 true，否则为 false。
   - uniform 变量：这些变量是在主程序中设置的，对所有片元都相同。它们可以是任何类型，包括浮点数、向量、矩阵、采样器等。
   - varying 变量：这些变量是在顶点着色器中设置的，然后在片元着色器中插值得到的。它们可以用于传递从顶点着色器到片元着色器的数据。
-
+  - 
 
 ### 实现一个球发光的渐变效果
 
@@ -77,3 +77,20 @@ vec2 rotate(vec2 uv, float rotation, vec2 mid){
     gl_FragColor = vec4(1,0,0, strength);  // 发光点 渐变 代码
 
 ```
+
+
+
+
+### glsl 常量
+```glsl
+
+#define PI 3.141592653589793   // 定义一个常量
+precision lowp float;          // 低精度渲染
+uniform float utime;           // 在THREE.ShaderMaterial.uniforms 里设置的变量
+varying float v_random;        // 传递给片元着色器的变量
+attribute float random;        // 通过geometry.setAttribute 设置的变量
+
+```
+
+
+#### threejs内置了大量的着色器可以参考 node_modules/three/src/renderers/shaders/ShaderChunk

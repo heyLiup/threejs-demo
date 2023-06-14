@@ -10,7 +10,6 @@ import * as THREE from "three";
 const CubeGrid = () => {
   const canvasRef = useRef();
   const firstRef = useRef(false);
-  const currentPointRef = useRef(null);
   const init = () => {
     let width = canvasRef.current.clientWidth;
     let height = canvasRef.current.clientHeight;
@@ -21,12 +20,8 @@ const CubeGrid = () => {
     const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
     const clock = new THREE.Clock();
     const controls = new OrbitControls(camera, renderer.domElement);
-    // controls.enableDamping = true;
-    // controls.autoRotate = true;
-    // controls.autoRotateSpeed = 0.5;
-    // controls.maxPolarAngle = (Math.PI / 4) * 3;
-    // controls.minPolarAngle = (Math.PI / 4) * 3;
-    camera.position.z = 100;
+
+    camera.position.z = 50;
 
     const ambientLight = new THREE.AmbientLight(0xffffff);
     scene.add(ambientLight);
@@ -34,40 +29,70 @@ const CubeGrid = () => {
     const pointLight = new THREE.PointLight(0xffffff, 1);
     pointLight.position.set(50, 50, 50);
     scene.add(pointLight);
-    const textureLoader = new RGBELoader();
-    textureLoader.loadAsync("assets/bg.hdr").then((texture) => {
-      texture.mapping = THREE.EquirectangularReflectionMapping; // 设置纹理映射
-      scene.background = texture;
-      scene.environment = texture;
-    });
+
+    const axesHelper = new THREE.AxesHelper(5);
+    scene.add(axesHelper);
 
     let material;
     let point;
     let geometry;
 
     function createPoint() {
-      console.log("createPoint");
+      let R = 10;
+      let deg = 180;
+      let count = 1000;
+      let offset = 1;
+      let color = new THREE.Color("#ff0000");
+      let outColor = new THREE.Color("#00ff00");
       geometry = new THREE.BufferGeometry();
-      const geometryPostionArray = new Float32Array(3);
-      geometryPostionArray[0] = 0;
-      geometryPostionArray[1] = 0;
-      geometryPostionArray[2] = 0;
+      const geometryPostionArray = new Float32Array(count * 3);
+      const geometryColorArray = new Float32Array(count * 3);
+      const geometryRandomArray = new Float32Array(count);
+
+      for (let i = 1; i < count; i++) {
+        let random = Math.random();
+        // if (Math.random() > 0.4) {
+        //   if (random > 0.4) {
+        //     random = 1 - random;
+        //   }
+        // }
+
+        let calcDeg = ((deg * random) / 180) * Math.PI;
+
+        geometryPostionArray[i * 3 + 0] =
+          R * Math.cos(calcDeg) + (Math.random() - 0.5) * offset;
+        geometryPostionArray[i * 3 + 1] = (Math.random() - 0.5) * offset;
+        geometryPostionArray[i * 3 + 2] =
+          R * Math.sin(calcDeg) + (Math.random() - 0.5) * offset;
+
+        const mixColor = color.clone().lerp(outColor, i / count);
+        geometryColorArray[i * 3 + 0] = mixColor.r;
+        geometryColorArray[i * 3 + 1] = mixColor.g;
+        geometryColorArray[i * 3 + 2] = mixColor.b;
+
+        geometryRandomArray[i] = Math.random();
+      }
+
       geometry.setAttribute(
         "position",
         new THREE.BufferAttribute(geometryPostionArray, 3)
       );
+      geometry.setAttribute(
+        "color",
+        new THREE.BufferAttribute(geometryColorArray, 3)
+      );
+
+      geometry.setAttribute(
+        "random",
+        new THREE.BufferAttribute(geometryRandomArray, 1)
+      );
       material = new THREE.ShaderMaterial({
         vertexShader: basicvertex,
+        vertexColors: true,
         fragmentShader: basicfragment,
         side: THREE.DoubleSide,
+        blending: THREE.AdditiveBlending,
         uniforms: {
-          uPosition: {
-            value: new THREE.Vector3(
-              20 * Math.random(),
-              100 * Math.random(),
-              -20
-            ),
-          },
           utime: {
             value: 0,
           },
@@ -77,35 +102,15 @@ const CubeGrid = () => {
       });
 
       point = new THREE.Points(geometry, material);
-      currentPointRef.current = point;
       scene.add(point);
     }
 
-    document.addEventListener("click", () => {
-      if (!currentPointRef.current) {
-        clock.start();
-        createPoint();
-      }
-    });
+    createPoint();
 
-    const axesHelper = new THREE.AxesHelper(5);
-    scene.add(axesHelper);
-
-    function clear() {
-      scene.remove(currentPointRef.current);
-      geometry.dispose();
-      material.dispose();
-      point.clear();
-    }
     const animate = function () {
       const elapsedTime = clock.getElapsedTime();
-      if (elapsedTime < 1 && material) {
-        material.uniforms.utime.value = elapsedTime;
-      } else if (elapsedTime > 1 && material) {
-        clear();
-        clock.stop();
-        currentPointRef.current = null;
-      }
+      material.uniforms.utime.value = elapsedTime;
+      // geometry.rotateY(-Math.PI / 100);
       requestAnimationFrame(animate);
       controls.update();
       renderer.render(scene, camera);
