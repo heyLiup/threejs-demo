@@ -1,4 +1,4 @@
-<img width="940" alt="image" src="https://github.com/heyLiup/threejs-demo/assets/30928738/73f2cbff-53ae-4e84-8ddb-967bf60b752b">
+<img width="465" alt="image" src="https://github.com/heyLiup/threejs-demo/assets/30928738/18e40fa0-6abd-4b1e-b8c1-26c26ba8bd3c">
 
 
 
