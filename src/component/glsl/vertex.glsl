@@ -8,13 +8,16 @@ varying float v_position;
 
 varying vec3 v_color;
 
-highp float rand( const in vec2 uv ) {
+float rand (vec2 st) {
+    return fract(sin(dot(st.xy,
+                         vec2(12.9898,78.233)))
+                 * 43758.5453123);
+}
 
-	const highp float a = 12.9898, b = 78.233, c = 43758.5453;
-	highp float dt = dot( uv.xy, vec2( a,b ) ), sn = mod( dt, PI );
-
-	return fract( sin( sn ) * c );
-
+// 旋转函数
+mat2 rotate2d(float _angle){
+    return mat2(cos(_angle),-sin(_angle),
+                sin(_angle),cos(_angle));
 }
 
 void main(){
@@ -41,5 +44,5 @@ void main(){
     v_position = modalPosition.y ;
     vec4 viewPostion =  viewMatrix * modalPosition;
     gl_Position = projectionMatrix * viewPostion;
-    gl_PointSize =  100.0 / -viewPostion.z ;   // 设置近大远小
+    gl_PointSize =  rand(vec2(utime, 100.0)) * 100.0 / -viewPostion.z ;   // 设置近大远小
 }

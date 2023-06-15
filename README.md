@@ -33,6 +33,16 @@ vec2 rotate(vec2 uv, float rotation, vec2 mid){
     );
 }
 
+
+// 二维矩阵旋转  
+mat2 rotate2d(float _angle){
+  return mat2(cos(_angle),-sin(_angle),
+              sin(_angle),cos(_angle));
+}
+
+float angle = sin(transformed.y + uTime) * 0.5;
+mat2 rotateMatrix = rotate2d(angle);
+transformed.xz = rotateMatrix * transformed.xz;
 ```
 
 [参考工具书](https://thebookofshaders.com/10/?lan=ch)
@@ -94,3 +104,10 @@ attribute float random;        // 通过geometry.setAttribute 设置的变量
 
 
 #### threejs内置了大量的着色器可以参考 node_modules/three/src/renderers/shaders/ShaderChunk
+
+
+### 物体投影
+1. 在渲染器中启用阴影映射 `renderer.shadowMap.enabled = true;`; 
+2. 创建一个地面，用于接收投影 `plane.receiveShadow = true;`;
+3. 创建一个光源，并启用其阴影映射 `pointLight.castShadow = true;`;
+4. 创建一个物体，并启用其阴影映射 `mesh.castShadow = true;`;
