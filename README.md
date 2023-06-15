@@ -1,5 +1,4 @@
-<img width="465" alt="image" src="https://github.com/heyLiup/threejs-demo/assets/30928738/18e40fa0-6abd-4b1e-b8c1-26c26ba8bd3c">
-
+<img width="288" alt="image" src="https://github.com/heyLiup/threejs-demo/assets/30928738/f3eb7c0f-c34e-4e9f-8cef-95f1391a6e0e">
 
 
 ## uv解释  
