@@ -42,6 +42,12 @@ mat2 rotate2d(float _angle){
 float angle = sin(transformed.y + uTime) * 0.5;
 mat2 rotateMatrix = rotate2d(angle);
 transformed.xz = rotateMatrix * transformed.xz;
+
+
+
+
+
+
 ```
 
 [参考工具书](https://thebookofshaders.com/10/?lan=ch)
@@ -100,6 +106,33 @@ varying float v_random;        // 传递给片元着色器的变量
 attribute float random;        // 通过geometry.setAttribute 设置的变量
 
 ```
+
+
+### glsl 内置函数
+
+
+1. normalize函数用于将向量标准化。标准化一个向量的过程是将这个向量的长度调整为1，但方向保持不变  
+      在下面的例子中，向量v的长度为5（因为根据勾股定理，sqrt(3^2 + 4^2 + 0^2) = 5），normalize函数会将其长度缩放为1，方向不变，所以nv的值应为(0.6, 0.8, 0.0)。
+
+
+    ```glsl
+    vec3 v = vec3(3.0, 4.0, 0.0);
+    vec3 nv = normalize(v);
+    ```
+2. dot函数用于计算两个向量的点积。点积是一种标量的乘积，它反映了两个向量的相似性。  
+   如果两个向量的方向一致，点积的结果为正；如果两个向量的方向相反，点积的结果为负。 
+   如果两个向量的方向正交，点积的结果为0。
+    - 这个函数返回v1和v2的点积，即每个维度分量相乘之和
+
+    ```glsl
+    vec3 v1 = vec3(1.0, 0.0, 0.0);
+    vec3 v2 = vec3(0.0, 1.0, 0.0);
+    float d = dot(v1, v2);
+
+    ```
+    - 在上面的例子中，因为向量v1和v2是正交的，所以它们的点积结果应该为0，即d的值应为0.0。 
+
+ 3. clamp 夹具函数，(genType x, float minVal, float maxVal)，clamp实际上是获得三个参数中大小处在中间的那个值
 
 
 #### threejs内置了大量的着色器可以参考 node_modules/three/src/renderers/shaders/ShaderChunk
